@@ -1,7 +1,7 @@
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 
-export function Dashboard() {
+export default function Dashboard() {
   const clients = useQuery(api.clients.getCoachClients) || [];
   const forms = useQuery(api.forms.getCoachForms) || [];
   const exercises = useQuery(api.exercises.getCoachExercises) || [];

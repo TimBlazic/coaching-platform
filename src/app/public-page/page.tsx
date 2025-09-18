@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { toast } from "sonner";
 
-export function PublicPageBuilder() {
+export default function PublicPageBuilder() {
   const [formData, setFormData] = useState({
     slug: "",
     title: "",

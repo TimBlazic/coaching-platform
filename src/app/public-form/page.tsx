@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
 
-export function PublicForm() {
+export default function PublicForm() {
   const { formId } = useParams<{ formId: string }>();
   const [responses, setResponses] = useState<Record<string, any>>({});
   const [submitterInfo, setSubmitterInfo] = useState({

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -10,7 +10,7 @@ type MealPlanMeal = {
   servings: number;
 };
 
-export function MealPlanBuilder() {
+export default function MealPlanBuilder() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedMealPlan, setSelectedMealPlan] = useState<any>(null);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);

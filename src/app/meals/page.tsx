@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { toast } from "sonner";
 
 type Ingredient = {
@@ -9,7 +9,7 @@ type Ingredient = {
   unit: string;
 };
 
-export function MealLibrary() {
+export default function MealLibrary() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState<any>(null);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);

@@ -3,7 +3,7 @@ import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
-import { Dashboard } from "./components/Dashboard";
+import Dashboard from "./app/dashboard/page";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,18 +12,18 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { FormBuilder } from "./components/FormBuilder";
-import { FormSubmissions } from "./components/FormSubmissions";
-import { PublicForm } from "./components/PublicForm";
-import { ExerciseLibrary } from "./components/ExerciseLibrary";
-import { WorkoutBuilder } from "./components/WorkoutBuilder";
-import { MealLibrary } from "./components/MealLibrary";
-import { MealPlanBuilder } from "./components/MealPlanBuilder";
-import { ClientsOverview } from "./components/ClientsOverview";
-import { ClientDetail } from "./components/ClientDetail";
-import { PublicPageBuilder } from "./components/PublicPageBuilder";
-import { PublicPage } from "./components/PublicPage";
-import { PricingPlans } from "./components/PricingPlans";
+import FormBuilder from "./app/forms/page";
+import FormSubmissions from "./app/forms/submissions/page";
+import PublicForm from "./app/public-form/page";
+import ExerciseLibrary from "./app/exercises/page";
+import WorkoutBuilder from "./app/workouts/page";
+import MealLibrary from "./app/meals/page";
+import MealPlanBuilder from "./app/meal-plans/page";
+import ClientsOverview from "./app/clients/page";
+import ClientDetail from "./app/clients/[clientId]/page";
+import PublicPageBuilder from "./app/public-page/page";
+import PublicPage from "./app/coach/[slug]/page";
+import PricingPlans from "./app/pricing-plans/page";
 import { useState } from "react";
 
 export default function App() {
@@ -92,7 +92,7 @@ function MainLayout() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
 
   const navigation = [
-    { name: "Dashboard", href: "/", icon: HomeIcon },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon },
     { name: "Clients", href: "/clients", icon: UsersIcon },
     { name: "Forms", href: "/forms", icon: DocumentTextIcon },
     { name: "Exercises", href: "/exercises", icon: LightningBoltIcon },
@@ -157,12 +157,9 @@ function MainLayout() {
         <main className="flex-1 overflow-y-auto bg-background">
           <div className="p-6">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/forms" element={<FormBuilder />} />
-              <Route
-                path="/forms/:formId/submissions"
-                element={<FormSubmissions />}
-              />
+              <Route path="/forms/submissions" element={<FormSubmissions />} />
               <Route path="/exercises" element={<ExerciseLibrary />} />
               <Route path="/workouts" element={<WorkoutBuilder />} />
               <Route path="/meals" element={<MealLibrary />} />
@@ -171,7 +168,8 @@ function MainLayout() {
               <Route path="/clients/:clientId" element={<ClientDetail />} />
               <Route path="/pricing-plans" element={<PricingPlans />} />
               <Route path="/public-page" element={<PublicPageBuilder />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </div>
         </main>

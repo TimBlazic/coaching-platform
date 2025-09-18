@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
 
@@ -13,7 +13,7 @@ type WorkoutExercise = {
   notes: string;
 };
 
-export function WorkoutBuilder() {
+export default function WorkoutBuilder() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<any>(null);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);

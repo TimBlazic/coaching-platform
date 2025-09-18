@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
 
-export function ClientDetail() {
+export default function ClientDetail() {
   const { clientId } = useParams<{ clientId: string }>();
   const [activeTab, setActiveTab] = useState("overview");
   const [showProgressForm, setShowProgressForm] = useState(false);

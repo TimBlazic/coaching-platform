@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
-export function PublicPage() {
+export default function PublicPage() {
   const { slug } = useParams<{ slug: string }>();
   const page = useQuery(api.publicPages.getPublicPageBySlug, { 
     slug: slug || "" 
