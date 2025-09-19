@@ -24,16 +24,17 @@ export default function ClientDetail() {
     energy: 5,
   });
 
-  const client = useQuery(api.clients.getClient, { 
-    clientId: clientId as Id<"clients"> 
+  const client = useQuery(api.clients.getClient, {
+    clientId: clientId as Id<"clients">,
   });
-  const progress = useQuery(api.clients.getClientProgress, { 
-    clientId: clientId as Id<"clients"> 
-  }) || [];
+  const progress =
+    useQuery(api.clients.getClientProgress, {
+      clientId: clientId as Id<"clients">,
+    }) || [];
   const workouts = useQuery(api.exercises.getCoachWorkouts) || [];
   const mealPlans = useQuery(api.meals.getCoachMealPlans) || [];
   const pricingPlans = useQuery(api.pricingPlans.getCoachPricingPlans) || [];
-  
+
   const updateClient = useMutation(api.clients.updateClient);
   const addProgress = useMutation(api.clients.addClientProgress);
 
@@ -41,8 +42,12 @@ export default function ClientDetail() {
     return (
       <div className="max-w-7xl mx-auto p-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Client Not Found</h1>
-          <p className="text-gray-600">This client may have been removed or you don't have access.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Client Not Found
+          </h1>
+          <p className="text-gray-600">
+            This client may have been removed or you don't have access.
+          </p>
         </div>
       </div>
     );
@@ -76,7 +81,9 @@ export default function ClientDetail() {
     try {
       await updateClient({
         clientId: clientId as Id<"clients">,
-        currentWorkoutSplit: workoutId ? workoutId as Id<"workoutSplits"> : undefined,
+        currentWorkoutSplit: workoutId
+          ? (workoutId as Id<"workoutSplits">)
+          : undefined,
       });
       toast.success("Workout assigned successfully");
     } catch (error) {
@@ -88,7 +95,9 @@ export default function ClientDetail() {
     try {
       await updateClient({
         clientId: clientId as Id<"clients">,
-        currentMealPlan: mealPlanId ? mealPlanId as Id<"mealPlans"> : undefined,
+        currentMealPlan: mealPlanId
+          ? (mealPlanId as Id<"mealPlans">)
+          : undefined,
       });
       toast.success("Meal plan assigned successfully");
     } catch (error) {
@@ -100,7 +109,9 @@ export default function ClientDetail() {
     try {
       await updateClient({
         clientId: clientId as Id<"clients">,
-        currentPricingPlan: pricingPlanId ? pricingPlanId as Id<"pricingPlans"> : undefined,
+        currentPricingPlan: pricingPlanId
+          ? (pricingPlanId as Id<"pricingPlans">)
+          : undefined,
       });
       toast.success("Pricing plan assigned successfully");
     } catch (error) {
@@ -110,7 +121,7 @@ export default function ClientDetail() {
 
   const handleProgressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       await addProgress({
         clientId: clientId as Id<"clients">,
@@ -122,7 +133,7 @@ export default function ClientDetail() {
         mood: progressData.mood,
         energy: progressData.energy,
       });
-      
+
       toast.success("Progress added successfully!");
       setProgressData({
         weight: 0,
@@ -140,23 +151,33 @@ export default function ClientDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "active": return "bg-green-100 text-green-800";
-      case "paused": return "bg-yellow-100 text-yellow-800";
-      case "inactive": return "bg-gray-100 text-gray-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "paused":
+        return "bg-yellow-100 text-yellow-800";
+      case "inactive":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case "paid": return "bg-green-100 text-green-800";
-      case "pending": return "bg-yellow-100 text-yellow-800";
-      case "overdue": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "paid":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "overdue":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
-  const currentPricingPlan = pricingPlans.find(p => p._id === client.currentPricingPlan);
+  const currentPricingPlan = pricingPlans.find(
+    (p) => p._id === client.currentPricingPlan
+  );
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -164,16 +185,22 @@ export default function ClientDetail() {
       <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{client.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              {client.name}
+            </h1>
             <p className="text-gray-600">{client.email}</p>
             {client.phone && <p className="text-gray-600">{client.phone}</p>}
           </div>
           <div className="text-right">
             <div className="flex gap-2 mb-2">
-              <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(client.status)}`}>
+              <span
+                className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(client.status)}`}
+              >
                 {client.status}
               </span>
-              <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getPaymentStatusColor(client.paymentStatus)}`}>
+              <span
+                className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getPaymentStatusColor(client.paymentStatus)}`}
+              >
                 {client.paymentStatus}
               </span>
             </div>
@@ -185,7 +212,8 @@ export default function ClientDetail() {
                 <div>
                   <div className="font-semibold">{currentPricingPlan.name}</div>
                   <div className="text-sm text-gray-500">
-                    ${currentPricingPlan.price}/{currentPricingPlan.billingPeriod}
+                    ${currentPricingPlan.price}/
+                    {currentPricingPlan.billingPeriod}
                   </div>
                 </div>
               ) : (
@@ -200,7 +228,10 @@ export default function ClientDetail() {
             <h3 className="text-sm font-medium text-gray-700 mb-2">Goals</h3>
             <div className="flex flex-wrap gap-2">
               {client.goals.map((goal, index) => (
-                <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                >
                   {goal}
                 </span>
               ))}
@@ -232,7 +263,9 @@ export default function ClientDetail() {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-100">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Payment Status</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-2">
+            Payment Status
+          </h3>
           <select
             value={client.paymentStatus}
             onChange={(e) => handlePaymentStatusUpdate(e.target.value)}
@@ -298,7 +331,12 @@ export default function ClientDetail() {
                   <input
                     type="number"
                     value={progressData.weight}
-                    onChange={(e) => setProgressData(prev => ({ ...prev, weight: parseFloat(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setProgressData((prev) => ({
+                        ...prev,
+                        weight: parseFloat(e.target.value) || 0,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     step="0.1"
                   />
@@ -311,7 +349,12 @@ export default function ClientDetail() {
                   <input
                     type="number"
                     value={progressData.bodyFat}
-                    onChange={(e) => setProgressData(prev => ({ ...prev, bodyFat: parseFloat(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setProgressData((prev) => ({
+                        ...prev,
+                        bodyFat: parseFloat(e.target.value) || 0,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     step="0.1"
                   />
@@ -323,21 +366,30 @@ export default function ClientDetail() {
                   Measurements (inches)
                 </label>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                  {Object.entries(progressData.measurements).map(([key, value]) => (
-                    <div key={key}>
-                      <label className="block text-xs text-gray-600 mb-1 capitalize">{key}</label>
-                      <input
-                        type="number"
-                        value={value}
-                        onChange={(e) => setProgressData(prev => ({
-                          ...prev,
-                          measurements: { ...prev.measurements, [key]: parseFloat(e.target.value) || 0 }
-                        }))}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        step="0.1"
-                      />
-                    </div>
-                  ))}
+                  {Object.entries(progressData.measurements).map(
+                    ([key, value]) => (
+                      <div key={key}>
+                        <label className="block text-xs text-gray-600 mb-1 capitalize">
+                          {key}
+                        </label>
+                        <input
+                          type="number"
+                          value={value}
+                          onChange={(e) =>
+                            setProgressData((prev) => ({
+                              ...prev,
+                              measurements: {
+                                ...prev.measurements,
+                                [key]: parseFloat(e.target.value) || 0,
+                              },
+                            }))
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          step="0.1"
+                        />
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
 
@@ -351,10 +403,17 @@ export default function ClientDetail() {
                     min="1"
                     max="10"
                     value={progressData.mood}
-                    onChange={(e) => setProgressData(prev => ({ ...prev, mood: parseInt(e.target.value) }))}
+                    onChange={(e) =>
+                      setProgressData((prev) => ({
+                        ...prev,
+                        mood: parseInt(e.target.value),
+                      }))
+                    }
                     className="w-full"
                   />
-                  <div className="text-center text-sm text-gray-600">{progressData.mood}</div>
+                  <div className="text-center text-sm text-gray-600">
+                    {progressData.mood}
+                  </div>
                 </div>
 
                 <div>
@@ -366,10 +425,17 @@ export default function ClientDetail() {
                     min="1"
                     max="10"
                     value={progressData.energy}
-                    onChange={(e) => setProgressData(prev => ({ ...prev, energy: parseInt(e.target.value) }))}
+                    onChange={(e) =>
+                      setProgressData((prev) => ({
+                        ...prev,
+                        energy: parseInt(e.target.value),
+                      }))
+                    }
                     className="w-full"
                   />
-                  <div className="text-center text-sm text-gray-600">{progressData.energy}</div>
+                  <div className="text-center text-sm text-gray-600">
+                    {progressData.energy}
+                  </div>
                 </div>
               </div>
 
@@ -379,7 +445,12 @@ export default function ClientDetail() {
                 </label>
                 <textarea
                   value={progressData.notes}
-                  onChange={(e) => setProgressData(prev => ({ ...prev, notes: e.target.value }))}
+                  onChange={(e) =>
+                    setProgressData((prev) => ({
+                      ...prev,
+                      notes: e.target.value,
+                    }))
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Any additional notes about progress"
@@ -435,11 +506,15 @@ export default function ClientDetail() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Latest Progress</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">
+                    Latest Progress
+                  </h3>
                   {progress.length > 0 ? (
                     <div>
                       <p className="text-2xl font-bold text-blue-600">
-                        {progress[0].weight ? `${progress[0].weight} lbs` : "No weight"}
+                        {progress[0].weight
+                          ? `${progress[0].weight} lbs`
+                          : "No weight"}
                       </p>
                       <p className="text-sm text-gray-500">
                         {new Date(progress[0].date).toLocaleDateString()}
@@ -451,16 +526,22 @@ export default function ClientDetail() {
                 </div>
 
                 <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Current Workout</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">
+                    Current Workout
+                  </h3>
                   <p className="text-green-600 font-medium">
                     {client.currentWorkoutSplit ? "Assigned" : "Not assigned"}
                   </p>
                 </div>
 
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Current Plan</h3>
+                  <h3 className="text-sm font-medium text-gray-700 mb-2">
+                    Current Plan
+                  </h3>
                   <p className="text-purple-600 font-medium">
-                    {currentPricingPlan ? currentPricingPlan.name : "No plan assigned"}
+                    {currentPricingPlan
+                      ? currentPricingPlan.name
+                      : "No plan assigned"}
                   </p>
                 </div>
               </div>
@@ -470,17 +551,24 @@ export default function ClientDetail() {
           {activeTab === "progress" && (
             <div className="space-y-4">
               {progress.map((entry) => (
-                <div key={entry._id} className="border border-gray-200 rounded-xl p-4">
+                <div
+                  key={entry._id}
+                  className="border border-gray-200 rounded-xl p-4"
+                >
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-medium text-gray-900">
                       {new Date(entry.date).toLocaleDateString()}
                     </h3>
                     <div className="flex gap-4 text-sm">
                       {entry.mood && (
-                        <span className="text-gray-600">Mood: {entry.mood}/10</span>
+                        <span className="text-gray-600">
+                          Mood: {entry.mood}/10
+                        </span>
                       )}
                       {entry.energy && (
-                        <span className="text-gray-600">Energy: {entry.energy}/10</span>
+                        <span className="text-gray-600">
+                          Energy: {entry.energy}/10
+                        </span>
                       )}
                     </div>
                   </div>
@@ -502,14 +590,16 @@ export default function ClientDetail() {
 
                   {entry.measurements && (
                     <div className="grid grid-cols-5 gap-4 mb-3">
-                      {Object.entries(entry.measurements).map(([key, value]) => (
+                      {Object.entries(entry.measurements).map(([key, value]) =>
                         value ? (
                           <div key={key}>
-                            <p className="text-sm text-gray-600 capitalize">{key}</p>
+                            <p className="text-sm text-gray-600 capitalize">
+                              {key}
+                            </p>
                             <p className="font-semibold">{value}"</p>
                           </div>
                         ) : null
-                      ))}
+                      )}
                     </div>
                   )}
 
@@ -539,18 +629,22 @@ export default function ClientDetail() {
           {activeTab === "programs" && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Assign Programs</h3>
-                
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Assign Programs
+                </h3>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Workout Program</h4>
-                    <select 
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      Workout Program
+                    </h4>
+                    <select
                       value={client.currentWorkoutSplit || ""}
                       onChange={(e) => handleWorkoutAssignment(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select a workout...</option>
-                      {workouts.map(workout => (
+                      {workouts.map((workout) => (
                         <option key={workout._id} value={workout._id}>
                           {workout.name}
                         </option>
@@ -559,14 +653,16 @@ export default function ClientDetail() {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Meal Plan</h4>
-                    <select 
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      Meal Plan
+                    </h4>
+                    <select
                       value={client.currentMealPlan || ""}
                       onChange={(e) => handleMealPlanAssignment(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select a meal plan...</option>
-                      {mealPlans.map(plan => (
+                      {mealPlans.map((plan) => (
                         <option key={plan._id} value={plan._id}>
                           {plan.name}
                         </option>
@@ -575,14 +671,18 @@ export default function ClientDetail() {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Pricing Plan</h4>
-                    <select 
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      Pricing Plan
+                    </h4>
+                    <select
                       value={client.currentPricingPlan || ""}
-                      onChange={(e) => handlePricingPlanAssignment(e.target.value)}
+                      onChange={(e) =>
+                        handlePricingPlanAssignment(e.target.value)
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select a pricing plan...</option>
-                      {pricingPlans.map(plan => (
+                      {pricingPlans.map((plan) => (
                         <option key={plan._id} value={plan._id}>
                           {plan.name} - ${plan.price}/{plan.billingPeriod}
                         </option>
