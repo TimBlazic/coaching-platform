@@ -41,12 +41,18 @@ export const createClient = mutation({
     phone: v.optional(v.string()),
     goals: v.array(v.string()),
     notes: v.optional(v.string()),
-    monthlyRate: v.optional(v.number()),
+    pricingPlanId: v.id("pricingPlans"),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) {
       throw new Error("Not authenticated");
+    }
+
+    // Verify the pricing plan belongs to the coach
+    const pricingPlan = await ctx.db.get(args.pricingPlanId);
+    if (!pricingPlan || pricingPlan.coachId !== userId) {
+      throw new Error("Pricing plan not found or access denied");
     }
 
     return await ctx.db.insert("clients", {
@@ -59,7 +65,7 @@ export const createClient = mutation({
       goals: args.goals,
       notes: args.notes,
       paymentStatus: "pending",
-      monthlyRate: args.monthlyRate,
+      currentPricingPlan: args.pricingPlanId,
     });
   },
 });

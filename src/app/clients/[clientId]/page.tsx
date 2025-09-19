@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
-import { Id } from "../../convex/_generated/dataModel";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export default function ClientDetail() {
   const { clientId } = useParams<{ clientId: string }>();
@@ -181,7 +181,16 @@ export default function ClientDetail() {
               Client since {new Date(client.startDate).toLocaleDateString()}
             </p>
             <p className="text-lg font-semibold text-gray-900">
-              ${client.monthlyRate || 0}/month
+              {currentPricingPlan ? (
+                <div>
+                  <div className="font-semibold">{currentPricingPlan.name}</div>
+                  <div className="text-sm text-gray-500">
+                    ${currentPricingPlan.price}/{currentPricingPlan.billingPeriod}
+                  </div>
+                </div>
+              ) : (
+                "No billing plan"
+              )}
             </p>
           </div>
         </div>
